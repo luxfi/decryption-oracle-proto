@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package oracle;
 
-option go_package = "client/client";
+option go_package = "go/oracle";
 
 // The decryption oracle service definition.
 service DecryptionOracle {
