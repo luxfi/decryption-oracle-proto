@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package oracle;
+
+option go_package = "decryption-oracle/client;client";
+
+// The greeting service definition.
+service DecryptionOracle {
+  // Sends a greeting
+  rpc Decrypt (DecryptRequest) returns (DecryptResponse) {}
+}
+
+// The request message containing the user's name.
+message DecryptRequest {
+  string encrypted = 1;
+}
+
+// The response message containing the greetings
+message DecryptResponse {
+  string decrypted = 1;
+  string signature = 2;
+}
