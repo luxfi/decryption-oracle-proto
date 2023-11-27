@@ -1,4 +1,9 @@
 fn main() {
+    #[cfg(not(feature = "build_proto"))]
+    {
+        return;
+    }
+
     // let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
     let out_dir = "./src/oracle";
     tonic_build::configure()
