@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package oracle;
-
+import "google/api/field_behavior.proto";
 option go_package = "go/oracle";
 
 // The decryption oracle service definition.
@@ -12,10 +12,24 @@ service DecryptionOracle {
   rpc AssertIsNil (IsNilRequest) returns (IsNilResponse) {}
 }
 
+enum EncryptedType {
+  Uint8 = 0;
+  Uint16 = 1;
+  Uint32 = 2;
+  Uint64 = 3;
+  Uint128 = 4;
+  Uint256 = 5;
+}
+
+message FheEncrypted {
+  bytes data = 1  [(google.api.field_behavior) = REQUIRED];
+  EncryptedType type = 2;
+}
+
 // The request message containing hex encoded encrypted number
 // and a currently used field with some proof (for future use)
 message IsNilRequest {
-  string encrypted = 1;
+  FheEncrypted encrypted = 1  [(google.api.field_behavior) = REQUIRED];
   string proof = 2;
 }
 
@@ -23,7 +37,7 @@ message IsNilRequest {
 // and the public key of the requesting user (also hex encoded)
 // and a currently used field with some proof (for future use)
 message ReencryptRequest {
-  string encrypted = 1;
+  FheEncrypted encrypted = 1  [(google.api.field_behavior) = REQUIRED];
   string user_public_key = 2;
   string proof = 3;
 }
@@ -31,7 +45,7 @@ message ReencryptRequest {
 // The request message containing hex encoded encrypted number
 // and a currently used field with some proof (for future use)
 message DecryptRequest {
-  string encrypted = 1;
+  FheEncrypted encrypted = 1  [(google.api.field_behavior) = REQUIRED];
   string proof = 2;
 }
 

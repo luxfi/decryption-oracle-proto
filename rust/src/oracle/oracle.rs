@@ -1,10 +1,18 @@
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FheEncrypted {
+    #[prost(bytes = "vec", tag = "1")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
+    #[prost(enumeration = "EncryptedType", tag = "2")]
+    pub r#type: i32,
+}
 /// The request message containing hex encoded encrypted number
 /// and a currently used field with some proof (for future use)
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IsNilRequest {
-    #[prost(string, tag = "1")]
-    pub encrypted: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "1")]
+    pub encrypted: ::core::option::Option<FheEncrypted>,
     #[prost(string, tag = "2")]
     pub proof: ::prost::alloc::string::String,
 }
@@ -14,8 +22,8 @@ pub struct IsNilRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReencryptRequest {
-    #[prost(string, tag = "1")]
-    pub encrypted: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "1")]
+    pub encrypted: ::core::option::Option<FheEncrypted>,
     #[prost(string, tag = "2")]
     pub user_public_key: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
@@ -26,8 +34,8 @@ pub struct ReencryptRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DecryptRequest {
-    #[prost(string, tag = "1")]
-    pub encrypted: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "1")]
+    pub encrypted: ::core::option::Option<FheEncrypted>,
     #[prost(string, tag = "2")]
     pub proof: ::prost::alloc::string::String,
 }
@@ -58,6 +66,44 @@ pub struct ReencryptResponse {
     pub reencrypted: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
     pub signature: ::prost::alloc::string::String,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum EncryptedType {
+    Uint8 = 0,
+    Uint16 = 1,
+    Uint32 = 2,
+    Uint64 = 3,
+    Uint128 = 4,
+    Uint256 = 5,
+}
+impl EncryptedType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            EncryptedType::Uint8 => "Uint8",
+            EncryptedType::Uint16 => "Uint16",
+            EncryptedType::Uint32 => "Uint32",
+            EncryptedType::Uint64 => "Uint64",
+            EncryptedType::Uint128 => "Uint128",
+            EncryptedType::Uint256 => "Uint256",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "Uint8" => Some(Self::Uint8),
+            "Uint16" => Some(Self::Uint16),
+            "Uint32" => Some(Self::Uint32),
+            "Uint64" => Some(Self::Uint64),
+            "Uint128" => Some(Self::Uint128),
+            "Uint256" => Some(Self::Uint256),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod decryption_oracle_client {
