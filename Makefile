@@ -1,5 +1,12 @@
-.PHONY: proto
-proto:
-	protoc -I ./proto --go_out=. --go-grpc_out=. ./proto/oracle/oracle.proto
-	# rm the google api till we optimize the oracle proto generation in build.rs
-	cd rust && cargo build --release --features="build_proto" && rm src/oracle/google.api.rs
+.PHONY: test build clean
+
+test:
+	cd go && go test ./...
+	cd rust && cargo test
+
+build:
+	cd go && go build ./...
+	cd rust && cargo build --release
+
+clean:
+	cd rust && cargo clean
